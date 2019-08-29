@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rentapartment.Model.Users;
@@ -24,6 +25,8 @@ public class loginActivity extends AppCompatActivity {
     private EditText InputPhoneNumber, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
+    private TextView AdminLink, NotAdminLink;
+
 
     private  String parentDbName = "Users";
 
@@ -35,6 +38,9 @@ public class loginActivity extends AppCompatActivity {
         LoginButton = (Button) findViewById(R.id.login_btn);
         InputPhoneNumber = (EditText) findViewById(R.id.login_phone_number_input);
         InputPassword = (EditText) findViewById(R.id.login_password_input);
+
+        AdminLink = (TextView) findViewById(R.id.admin_panel_link);
+        NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
         loadingBar = new ProgressDialog(this);
 
 
@@ -47,6 +53,28 @@ public class loginActivity extends AppCompatActivity {
         });
 
 
+        AdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LoginButton.setText("Login Admin"); //promjena teksta na login btn kada se odabere opcija I am admin
+                AdminLink.setVisibility(view.INVISIBLE);
+                NotAdminLink.setVisibility(View.VISIBLE);
+                parentDbName = "Admins"; //Admins db
+
+            }
+        });
+        //ako korisnik slucajno odabere adminlink, ovako se vraca nazad:
+        NotAdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                LoginButton.setText("Login");
+                AdminLink.setVisibility(view.VISIBLE);
+                NotAdminLink.setVisibility(View.INVISIBLE);
+                parentDbName = "Users";//koristi se Users db
+            }
+        });
     }
 
     private void loginUser() {
@@ -82,23 +110,36 @@ public class loginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot.child(parentDbName).child(phone).exists())
+                if (dataSnapshot.child(parentDbName).child(phone).exists()) //dohvacanje phone varijable unutar db
                 {
-                    Users usersDara = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class); //dohvacanje i dodavanje phone number
+                    Users usersData = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class); //dohvacanje i dodavanje phone number
 
-                    if (usersDara.getPhone().equals(phone)){
+                    //provjera phone i password, te provjera db
+                    if (usersData.getPhone().equals(phone)){
 
-                        if (usersDara.getPassword().equals(password)){
+                        if (usersData.getPassword().equals(password))
+                        {
+                            if(parentDbName.equals("Admins"))
+                            {
+                                Toast.makeText(loginActivity.this, "Admin logged in Successfully", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
 
-                            Toast.makeText(loginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                            loadingBar.dismiss();
+                                Intent intent = new Intent(loginActivity.this, AdminCategoryActivity.class);
+                                startActivity(intent);
+                            }
+                            else if (parentDbName.equals("Users"))
+                            {
+                                Toast.makeText(loginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
 
-                            Intent intent = new Intent(loginActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                                Intent intent = new Intent(loginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                            }
                         }
                         else {
                             loadingBar.dismiss();
                             Toast.makeText(loginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
+
 
 
                         }

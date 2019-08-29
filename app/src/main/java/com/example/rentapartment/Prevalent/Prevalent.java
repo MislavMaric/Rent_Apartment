@@ -6,3 +6,6 @@ public class Prevalent {
 
     private static Users currentOnlineUser;
 }
+
+
+//OVO MI MOZDA NECE TREBAT, TO JE ZA CHECKBOX
