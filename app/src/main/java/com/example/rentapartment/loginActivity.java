@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rentapartment.Model.Users;
+import com.example.rentapartment.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -133,6 +134,7 @@ public class loginActivity extends AppCompatActivity {
                                 loadingBar.dismiss();
 
                                 Intent intent = new Intent(loginActivity.this, HomeActivity.class);
+                                Prevalent.currentOnlineUser = usersData;
                                 startActivity(intent);
                             }
                         }
