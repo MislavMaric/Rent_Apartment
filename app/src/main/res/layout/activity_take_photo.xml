@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TakePhotoActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        >
+
+    </ImageView>
+
+    <Button
+        android:id="@+id/btnCaptureImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:text="Capture Image"
+        android:layout_below="@+id/imageView" />
+
+
+
+
+
+
+    <!--<Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/camera_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Camera"
+
+        />-->
+
+
+
+</RelativeLayout>

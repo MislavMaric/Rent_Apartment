@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".AdminAddNewProductActivity">
 
-    <ImageView
+   <ImageView
         android:id="@+id/select_rental_image"
         android:layout_width="350dp"
         android:layout_height="250dp"
@@ -18,11 +18,37 @@
         android:layout_marginTop="10dp"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/select_image_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Select Image"
+        android:layout_below="@+id/select_rental_image"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/take_image_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Take Image"
+        android:layout_below="@+id/select_image_btn"
+        />
+
     <EditText
         android:id="@+id/rental_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/select_rental_image"
+        android:layout_below="@+id/take_image_btn"
         android:inputType="textMultiLine"
         android:layout_marginTop="20dp"
         android:padding="20dp"

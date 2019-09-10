@@ -104,12 +104,23 @@ public class HomeActivity extends AppCompatActivity
         FirebaseRecyclerAdapter<Rentals, RentalViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Rentals, RentalViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull RentalViewHolder holder, int i, @NonNull Rentals model)
+                    protected void onBindViewHolder(@NonNull RentalViewHolder holder, int i, @NonNull final Rentals model)
                     {
                         holder.txtRentalName.setText(model.getName());
                         holder.txtRentalDescription.setText(model.getDescription());
                         holder.txtRentalPrice.setText("Price = " + model.getPrice());
                         Picasso.get().load(model.getImage()).into(holder.imageView);
+
+                        //odabir pojedinog itema na home activitiyu i slanje na novi activity
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Intent intent = new Intent(HomeActivity.this, RentalDetailsActivity.class);
+                                intent.putExtra("pid", model.getPid()); //dohvacanje id od odabranog itema
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                     @NonNull
@@ -173,7 +184,8 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_settings)
         {
-
+            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_logout)
         {
