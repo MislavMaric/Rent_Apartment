@@ -127,6 +127,7 @@ public class loginActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(loginActivity.this, AdminCategoryActivity.class);
                                 startActivity(intent);
+
                             }
                             else if (parentDbName.equals("Users"))
                             {

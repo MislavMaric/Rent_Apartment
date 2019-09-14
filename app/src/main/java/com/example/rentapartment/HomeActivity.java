@@ -8,8 +8,6 @@ import com.example.rentapartment.Prevalent.Prevalent;
 import com.example.rentapartment.ViewHolder.RentalViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,10 +16,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +33,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -75,9 +69,9 @@ public class HomeActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         TextView userNameTextView = headerView.findViewById(R.id.user_profile_name);
-        CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
-        //prikazivanje imena i profilne slike korisnika
+
+        //prikazivanje imena korisnika
         userNameTextView.setText(Prevalent.currentOnlineUser.getName()); //dohvacanje imena korisnika
 
 
@@ -107,7 +101,7 @@ public class HomeActivity extends AppCompatActivity
                     protected void onBindViewHolder(@NonNull RentalViewHolder holder, int i, @NonNull final Rentals model)
                     {
                         holder.txtRentalName.setText(model.getName());
-                        holder.txtRentalDescription.setText(model.getDescription());
+                        //holder.txtRentalDescription.setText(model.getDescription());
                         holder.txtRentalPrice.setText("Price = " + model.getPrice());
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
@@ -150,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; dodatak itema u action bar
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
@@ -178,16 +172,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_categories)
-        {
 
-        }
-        else if (id == R.id.nav_settings)
-        {
-            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        }
-        else if (id == R.id.nav_logout)
+        if (id == R.id.nav_logout)
         {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

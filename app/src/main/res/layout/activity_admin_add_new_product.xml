@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,6 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdminAddNewProductActivity">
+
 
    <ImageView
         android:id="@+id/select_rental_image"
@@ -34,21 +42,33 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/take_image_btn"
+        android:id="@+id/btn_take"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Take Image"
-        android:layout_below="@+id/select_image_btn"
+        android:layout_below="@+id/tv_message"
         />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_image_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        />
+
 
     <EditText
         android:id="@+id/rental_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/take_image_btn"
+        android:layout_below="@+id/btn_take"
         android:inputType="textMultiLine"
         android:layout_marginTop="20dp"
         android:padding="20dp"
@@ -96,6 +116,7 @@
         android:layout_marginRight="45dp"
         android:padding="17dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:textSize="18sp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
@@ -103,3 +124,4 @@
         />
 
 </RelativeLayout>
+</ScrollView>

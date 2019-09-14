@@ -30,11 +30,20 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 
+import androidx.core.content.FileProvider;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.widget.TextView;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+
+
 
     public class AdminAddNewProductActivity extends AppCompatActivity
     {
         private String CategoryName, Description, Price, Rname, saveCurrentDate, saveCurrentTime;
-        private Button AddNewRentalButton, TakePhoto, SelectPhoto;
+        private Button AddNewRentalButton, SelectPhoto;
         private ImageView InputRentalImage;
         private EditText InputRentalName, InputRentalDescription, InputRentalPrice;
         private static final int GalleryPick = 1;
@@ -43,6 +52,14 @@ import java.util.HashMap;
         private StorageReference RentalImagesRef;
         private DatabaseReference RentalsRef;
         private ProgressDialog loadingBar;
+
+        //---Take image---//
+        Button btn_take;
+        TextView tv_message;
+
+        static final int REQUEST_TAKE_PHOTO = 1;
+
+        String currentPhotoPath; //ime file-a koji je pohranjen pomocu kamere
 
 
         @Override
@@ -65,8 +82,6 @@ import java.util.HashMap;
             loadingBar = new ProgressDialog(this);
 
             SelectPhoto = (Button) findViewById(R.id.select_image_btn);
-            TakePhoto = (Button) findViewById(R.id.take_image_btn);
-
 
             SelectPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,23 +91,26 @@ import java.util.HashMap;
                 }
             });
 
-            TakePhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(AdminAddNewProductActivity.this, CameraActivity.class);
-                    startActivity(intent);
-                }
-            });
-
-
             AddNewRentalButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view)
                 {
                     ValidateProductData();
+
                 }
             });
+
+            //---Take image---//
+            btn_take = findViewById(R.id.btn_take);
+            tv_message = findViewById(R.id.tv_message);
+
+            btn_take.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
+            //---Take image---//
         }
 
 
@@ -116,6 +134,16 @@ import java.util.HashMap;
                 ImageUri = data.getData();
                 InputRentalImage.setImageURI(ImageUri);
             }
+
+            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+                //prikazivanje file name u tv_message
+                TextView tv_message;
+                tv_message = findViewById(R.id.tv_message);
+                tv_message.setText("Image location: " + currentPhotoPath);
+            }
+                //galleryAddPic();
+
+
         }
 
 
@@ -145,6 +173,7 @@ import java.util.HashMap;
             else
             {
                 StoreRentalInformation();
+
             }
         }
 
@@ -208,13 +237,14 @@ import java.util.HashMap;
                                 downloadImageUrl = task.getResult().toString();
 
                                 Toast.makeText(AdminAddNewProductActivity.this, "Got rental image url successfully", Toast.LENGTH_SHORT).show();
-
                                 SaveProductInfoToDatabase();
                             }
                         }
                     });
                 }
             });
+
+
         }
 
 
@@ -242,7 +272,7 @@ import java.util.HashMap;
                                 startActivity(intent);
 
                                 loadingBar.dismiss();
-                                Toast.makeText(AdminAddNewProductActivity.this, "Product is added successfully..", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AdminAddNewProductActivity.this, "Rental is added successfully..", Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
@@ -253,4 +283,58 @@ import java.util.HashMap;
                         }
                     });
         }
+
+
+
+        //----------------------Take image-----------------------//
+
+
+
+        private void dispatchTakePictureIntent() {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // kreiranje File-a u koji bi se trebala pohraniti slika
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // pojavio se error prilikom kreiranja slike
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+                // nastavak ukoliko se file uspjesno kreirao
+                if (photoFile != null) {
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", photoFile));
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+            }
+        }
+
+        private File createImageFile() throws IOException {
+            // kreiranje image file imena
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            //direktorij u kojem ce se kreirati file, zadana lokacija od Camera photos
+            File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM), "Camera");
+            File image = File.createTempFile(
+                    imageFileName,
+                    ".jpg",
+                    storageDir
+            );
+            // pohrana file: path for using again
+            currentPhotoPath = "file://" + image.getAbsolutePath();
+            return image;
+        }
+
+
+
+        /*private void galleryAddPic() {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            File f = new File(currentPhotoPath);
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            this.sendBroadcast(mediaScanIntent);
+        }*/
     }
